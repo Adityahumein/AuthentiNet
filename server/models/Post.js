@@ -8,21 +8,24 @@ const PostSchema = new mongoose.Schema({
   },
   content: {
     type: String,
-    required: [true, 'Post content cannot be empty']
+    default: "" // Optional if it's a pure image/video asset
   },
   contentHash: {
     type: String,
     required: true,
-    unique: true // Guarantees a deterministic proof-of-origin fingerprint
+    unique: true
   },
   aiScore: {
     humanProbability: { type: Number, required: true },
     aiProbability: { type: Number, required: true }
   },
-  createdAt: {
-    type: Date,
-    default: Date.now
+  // --- NEW MULTI-MEDIA SCHEMATIC FIELDS ---
+  assetMeta: {
+    isMedia: { type: Boolean, default: false },
+    fileName: { type: String, default: null },
+    fileMimeType: { type: String, default: null },
+    thumbnailRaw: { type: String, default: null } // Base64 encoding to render visuals inline
   }
-});
+}, { timestamps: true });
 
 module.exports = mongoose.model('Post', PostSchema);
