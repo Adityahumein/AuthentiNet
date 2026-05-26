@@ -1,49 +1,64 @@
-# AuthentiNet: Multi-Language AI Content Provenance Mesh
+Markdown
+# AuthentiNet: Multi-Media Forensic Workstation
 
-AuthentiNet is a secure full-stack text verification system designed to preserve media authenticity. The platform implements a decoupled microservice mesh architecture to seamlessly compute deterministic SHA-256 cryptographic proof-of-origin strings while simultaneously running linguistic token analysis against specialized machine learning models to detect synthetic generative patterns.
+AuthentiNet is an enterprise-grade full-stack forensic application designed to detect synthetic and AI-generated media (PDFs, Images, and Videos). It utilizes a hybrid data model—combining **MongoDB Atlas** for high-throughput metadata logs and a decentralized **Solidity Smart Contract** ledger for immutable file tracking.
 
-## 🛠️ System Architecture
+## 📐 System Architecture
 
-The application scales computational demands by decoupling web infrastructure from heavy deep learning inference layers:
+- **Frontend:** React (Vite) styled with a custom, framework-independent utility layer (`src/App.css`) for high-utility data dashboard tracking.
+- **Orchestration Gateway:** Node.js / Express processing asset hashing (SHA-256) and routing Web3 ledger transitions via `ethers.js`.
+- **AI Core Cluster:** Python / FastAPI executing deep learning inference pipelines via local `transformers` and `torch` runtimes.
+- **Decentralized Fallback Network:** Hardhat EVM network simulator executing immutable forensic tracking logs.
 
-* **Client Layer (Vite + React):** An ultra-minimal high-contrast workspace styled under strict dark monochrome layouts. Handles active authorization token validation and states using browser caching matrices.
-* **API Gateway (Node.js + Express):** A central request controller guarded by custom asynchronous JWT token evaluation middleware. Enforces secure, tamper-proof creator tracking and performs SHA-256 fingerprint generation.
-* **Persistence Layer (MongoDB):** A document data store handling user profile schemas and recording irreversible content checksum history logs.
-* **Analytical Inference Node (Python FastAPI):** An independent background microservice acting as a low-latency proxy engine that maps processed payload arrays directly to production cloud classification clusters (Sapling AI API).
+## 🚀 Local Deployment Quickstart
 
----
-
-## 🚀 Technical Features
-
-* **JWT Security Middlewares:** Eliminates client-side state manipulation by extracting ownership details strictly from verified, cryptographically signed network header frames.
-* **Adversarial Drift Prevention:** Bypasses model obsolescence by routing payloads to an evolving cloud-based ensemble linguistic detector.
-* **Immutable Cryptographic Fingerprinting:** Generates unique content hashes based on composite block variables (`userId + text + timestamp`), rendering data records resistant to retrospective tampering.
-
----
-
-## 💻 Tech Stack Matrix
-
-| Layer | Technologies Utilized |
-| :--- | :--- |
-| **Frontend UI** | React.js (v18), Vite, Tailwind CSS, Axios |
-| **Gateway App** | Node.js, Express, JavaScript (ES6+), Mongoose |
-| **Security Core** | JSON Web Tokens (JWT), Cryptographic Hashing (`crypto`), Bcryptjs |
-| **Inference Engine** | Python 3.11+, FastAPI, Requests, Pydantic |
-| **Database Engine** | MongoDB Compass / Atlas Cluster Array |
-
----
-
-## ⚡ Setup & Local Installation
-
-### Prerequisites
-* Node.js (v18+) Installed
-* Python (3.10+) Installed
-* MongoDB Compass running locally on `mongodb://127.0.0.1:27017`
-
-### 1. Stand Up the AI Microservice
+### 1. Start the Local Blockchain Node
 ```bash
+cd blockchain
+npm install --legacy-peer-deps
+npx hardhat node
+2. Deploy the Smart Contract
+In a separate terminal:
+
+Bash
+npx hardhat run scripts/deploy.js --network localhost
+3. Launch the Express Gateway Server
+Update your server/.env with the generated CONTRACT_ADDRESS and Account #0's Private Key, then run:
+
+Bash
+cd server
+npm install
+node index.js
+4. Initialize the AI Inference Engine
+Bash
 cd ai-service
-python -m venv venv
-source venv/Scripts/activate  # On Windows use: venv\Scripts\activate
-pip install fastapi uvicorn requests pydantic
-uvicorn main:app --reload --port 8000
+.\venv\Scripts\activate
+pip install -r requirements.txt
+uvicorn main:app --reload
+5. Boot the React Frontend Dashboard
+Bash
+cd client
+npm install
+npm run dev
+
+---
+
+## 🔒 Step 2: Double-Check Your `.gitignore` Files
+> ⚠️ **CRITICAL SECURITY CHECK:** Before you push anything else to a public GitHub repo, you **must** ensure you are not uploading your secret key files, database passwords, or heavy dependency folders. 
+
+Make sure you have an active `.gitignore` file inside your **`server/`** folder and your **`blockchain/`** folder containing these lines:
+
+```text
+# server/.gitignore & blockchain/.gitignore
+node_modules/
+.env
+.artifacts/
+cache/
+Inside your ai-service/ folder, your .gitignore should look like this:
+
+Plaintext
+# ai-service/.gitignore
+venv/
+__pycache__/
+*.pyc
+.env
