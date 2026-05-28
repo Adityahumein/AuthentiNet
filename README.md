@@ -1,7 +1,7 @@
 Markdown
 # AuthentiNet: Multi-Media Forensic Workstation
 
-AuthentiNet is an enterprise-grade full-stack forensic application designed to detect synthetic and AI-generated media (PDFs, Images, and Videos). It utilizes a hybrid data model—combining **MongoDB Atlas** for high-throughput metadata logs and a decentralized **Solidity Smart Contract** ledger for immutable file tracking.
+AuthentiNet is an enterprise-grade full-stack forensic application designed to detect synthetic and AI-generated media (PDFs, Images, and Videos). It utilizes a hybrid data model—combining **MongoDB Compass** for high-throughput metadata logs and a decentralized **Solidity Smart Contract**(will be implemented further on) ledger for immutable file tracking.
 
 ## 📐 System Architecture
 
