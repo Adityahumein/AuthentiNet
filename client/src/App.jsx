@@ -1,24 +1,22 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { Activity } from 'lucide-react';
 import './App.css';
 
 import AuthGateway from './components/AuthGateway';
-import Sidebar from './components/Sidebar';
-import Workstation from './components/Workstation';
-import ExplorerLedger from './components/ExplorerLedger';
+import Navbar from './components/Navbar';
+import Composer from './components/Composer';
+import Feed from './components/Feed';
 
 export default function App() {
   const [user, setUser] = useState(null);
   const [token, setToken] = useState(localStorage.getItem('token') || '');
-  const [activeTab, setActiveTab] = useState('workspace');
   const [isLoginView, setIsLoginView] = useState(true);
   const [authError, setAuthError] = useState('');
-  
+
   const [username, setUsername] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  
+
   const [content, setContent] = useState('');
   const [selectedFile, setSelectedFile] = useState(null);
   const [isDragging, setIsDragging] = useState(false);
@@ -84,7 +82,6 @@ export default function App() {
       if (response.data.success) {
         setContent('');
         fetchFeed();
-        setActiveTab('ledger');
       }
     } catch (error) {
       alert(error.response?.data?.error || "Pipeline barrier broken.");
@@ -104,8 +101,7 @@ export default function App() {
       const response = await axios.post('http://localhost:5000/api/media/verify', formData, config);
       if (response.data.success) {
         setSelectedFile(null);
-        fetchFeed(); 
-        setActiveTab('ledger');
+        fetchFeed();
       }
     } catch (error) {
       alert(error.response?.data?.error || "Media failure.");
@@ -122,7 +118,7 @@ export default function App() {
 
   if (!user) {
     return (
-      <AuthGateway 
+      <AuthGateway
         isLoginView={isLoginView} setIsLoginView={setIsLoginView}
         authError={authError} setAuthError={setAuthError}
         username={username} setUsername={setUsername}
@@ -135,36 +131,20 @@ export default function App() {
 
   return (
     <div className="ws-app-wrapper">
-      <Sidebar activeTab={activeTab} setActiveTab={setActiveTab} username={user.username} handleLogout={handleLogout} />
-      
-      <main className="ws-main-content">
-        <div className="ws-container-limit" style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-          
-          <header className="ws-header">
-            <div>
-              <h2 className="ws-header-title">{activeTab} Interface</h2>
-              <p style={{ fontSize: '0.75rem', color: '#94A3B8', margin: '0.25rem 0 0 0' }}>Natively running RoBERTa-Large and Swin Transformer pipelines locally.</p>
-            </div>
-            <div className="ws-status-badge">
-              <Activity style={{ width: '0.85rem', height: '0.85rem', animation: 'pulse 2s infinite' }} /> Adaptive Shield Routing: ARMED
-            </div>
-          </header>
+      <Navbar username={user.username} handleLogout={handleLogout} />
 
-          {activeTab === 'workspace' ? (
-            <Workstation 
-              content={content} setContent={setContent}
-              selectedFile={selectedFile} setSelectedFile={setSelectedFile}
-              isDragging={isDragging} setIsDragging={setIsDragging}
-              isLoading={isLoading}
-              handleVerifyContent={handleVerifyContent}
-              handleMediaVerifySubmit={handleMediaVerifySubmit}
-            />
-          ) : (
-            <ExplorerLedger posts={posts} />
-          )}
-
-        </div>
-      </main>
+      <div className="ws-feed-column">
+        <Composer
+          username={user.username}
+          content={content} setContent={setContent}
+          selectedFile={selectedFile} setSelectedFile={setSelectedFile}
+          isDragging={isDragging} setIsDragging={setIsDragging}
+          isLoading={isLoading}
+          handleVerifyContent={handleVerifyContent}
+          handleMediaVerifySubmit={handleMediaVerifySubmit}
+        />
+        <Feed posts={posts} />
+      </div>
     </div>
   );
 }
