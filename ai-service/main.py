@@ -8,6 +8,7 @@ from fastapi import FastAPI, UploadFile, File, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 from pypdf import PdfReader
+from dotenv import load_dotenv
 from PIL import Image
 from dotenv import load_dotenv
 from transformers import AutoModelForSequenceClassification, AutoTokenizer, AutoImageProcessor, AutoModelForImageClassification
