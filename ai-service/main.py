@@ -9,8 +9,11 @@ from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 from pypdf import PdfReader
 from PIL import Image
+from dotenv import load_dotenv
 from transformers import AutoModelForSequenceClassification, AutoTokenizer, AutoImageProcessor, AutoModelForImageClassification
 
+load_dotenv(dotenv_path=os.path.join(os.path.dirname(__file__), ".env"))
+SAPLING_API_KEY = os.getenv("SAPLING_API_KEY")
 app = FastAPI(
     title="AuthentiNet Hybrid Multi-Media Inference Router",
     description="Text payloads route to Sapling Cloud; Documents, Images, and Videos process locally."
@@ -25,7 +28,8 @@ app.add_middleware(
 )
 
 # 1. Cloud Infrastructure Credential Tracking Gate
-SAPLING_API_KEY = "F6Y2HZ6ZVJOG1GSQ7X9GUCABHCV34BYF"
+if not SAPLING_API_KEY:
+    raise RuntimeError("Set SAPLING_API_KEY before starting the AI service.")
 
 # 2. Local Text Infrastructure Model Core (Loaded hot into RAM)
 print("[System Init] Loading Local Text Processor (RoBERTa-Large)...")

@@ -9,6 +9,7 @@ node_modules/
 
 # Python environment isolates
 /ai-service/venv/
+/ai-service/env
 __pycache__/
 *.pyc
 
